@@ -1,0 +1,23 @@
+# Quick debug test for MNIST data
+print("Loading small test...")
+let raw = load("examples/mnist_test.csv")
+print("Rows loaded:", len(raw))
+print("First row length:", len(raw[0]))
+
+let data = data_prepare(raw, 0, 5, 0.00392156862)
+let X = data[0]
+let y = data[1]
+
+print("X length:", len(X))
+print("y length:", len(y))
+print("Sample 0 features:", len(X[0]))
+print("Label 0:", y[0])
+
+# Try creating and immediately predicting without training
+let net = nn_create([784, 128, 10], "tanh")
+print("Network created")
+
+print("Predicting sample 0...")
+let pred = nn_predict(net, X[0])
+print("Prediction:", pred)
+print("Predicted digit:", argmax(pred))

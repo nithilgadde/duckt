@@ -1,0 +1,129 @@
+# MNIST Handwritten Digit Classifier Agent
+# Uses a neural network to recognize handwritten digits (0-9)
+#
+# Usage: duckt examples/mnist_agent.dt
+
+print("========================================")
+print("  MNIST Handwritten Digit Classifier")
+print("  Powered by Duckt")
+print("========================================")
+print("")
+
+# ---- Load and prepare training data ----
+
+print("Loading training data...")
+let raw_train = load("examples/mnist_train.csv")
+print("Loaded", len(raw_train), "rows")
+
+# data_prepare(data, label_col, max_samples, scale_factor)
+# Splits into [X, y], normalizes pixels from 0-255 to 0-1
+print("Preparing training data (2000 samples, normalized)...")
+let train_data = data_prepare(raw_train, 0, 2000, 0.00392156862)
+let X_train = train_data[0]
+let y_train = train_data[1]
+print("Training set:", len(X_train), "samples")
+print("")
+
+# ---- Load and prepare test data ----
+
+print("Loading test data...")
+let raw_test = load("examples/mnist_test.csv")
+print("Loaded", len(raw_test), "rows")
+
+print("Preparing test data (500 samples, normalized)...")
+let test_data = data_prepare(raw_test, 0, 500, 0.00392156862)
+let X_test = test_data[0]
+let y_test = test_data[1]
+print("Test set:", len(X_test), "samples")
+print("")
+
+# ---- Create and train the neural network ----
+
+print("Creating neural network...")
+let net = nn_create([784, 128, 10], "tanh")
+print("Architecture: 784 -> 128 -> 10 (tanh activation)")
+print("")
+
+print("Training for 10 epochs...")
+print("----------------------------------------")
+let final_loss = nn_train(net, X_train, y_train, 10, 0.005, 32, true)
+print("----------------------------------------")
+print("Final loss:", final_loss)
+print("")
+
+# ---- Evaluate on test set ----
+
+print("Evaluating on test set...")
+let correct = 0
+
+for i in range(len(X_test)):
+    let pred = nn_predict(net, X_test[i])
+    let predicted_digit = argmax(pred)
+    if predicted_digit == y_test[i]:
+        correct = correct + 1
+
+let accuracy = correct / len(X_test) * 100.0
+print("Test accuracy:", accuracy, "%  (", correct, "/", len(X_test), ")")
+print("")
+
+# ---- Save the trained model ----
+
+nn_save(net, "mnist_model.bin")
+print("Model saved to mnist_model.bin")
+print("")
+
+# ---- Define the classifier agent ----
+
+agent DigitClassifier:
+    state model_name = net
+    state predictions_made = 0
+    state history = []
+
+    tool classify(pixels):
+        let pred = nn_predict(model_name, pixels)
+        let digit = argmax(pred)
+        predictions_made = predictions_made + 1
+        history = history + [digit]
+        return digit
+
+    tool classify_with_confidence(pixels):
+        let pred = nn_predict(model_name, pixels)
+        let digit = argmax(pred)
+        let conf = tensor_get(pred, digit)
+        predictions_made = predictions_made + 1
+        history = history + [digit]
+        print("  Digit:", digit, " Confidence:", conf)
+        return digit
+
+    fn get_stats():
+        print("Total predictions:", predictions_made)
+        return predictions_made
+
+    fn get_history():
+        return history
+
+print("========================================")
+print("  Agent Ready: DigitClassifier")
+print("========================================")
+print("")
+
+# ---- Demo: classify some test samples ----
+
+let classifier = DigitClassifier
+
+print("Classifying first 10 test digits:")
+print("")
+
+for i in range(10):
+    let expected = y_test[i]
+    let predicted = classifier.classify_with_confidence(X_test[i])
+    if predicted == expected:
+        print("  Sample", i, ": Expected", expected, "-> Got", predicted, "  CORRECT")
+    else:
+        print("  Sample", i, ": Expected", expected, "-> Got", predicted, "  WRONG")
+
+print("")
+classifier.get_stats()
+print("Prediction history:", classifier.get_history())
+print("")
+print("Done! The DigitClassifier agent is trained and ready.")

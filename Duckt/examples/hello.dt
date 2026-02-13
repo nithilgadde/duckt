@@ -1,0 +1,76 @@
+# Hello World in Duckt
+# Basic syntax demonstration
+
+print("Hello, Duckt!")
+
+# Variables
+let name = "World"
+let year = 2024
+print("Hello, " + name + "! Welcome to " + str(year))
+
+# Numbers and arithmetic
+let x = 42
+let y = 3.14
+let z = x + y
+print("x + y =", z)
+
+# Boolean operations
+let is_ready = true
+let is_complete = false
+print("Ready:", is_ready, "Complete:", is_complete)
+print("Ready and Complete:", is_ready and is_complete)
+print("Ready or Complete:", is_ready or is_complete)
+
+# Conditional statements
+if x > 40:
+    print("x is greater than 40")
+else:
+    print("x is 40 or less")
+
+# Lists
+let fruits = ["apple", "banana", "cherry"]
+print("Fruits:", fruits)
+print("First fruit:", fruits[0])
+print("Number of fruits:", len(fruits))
+
+# Loops
+print("Counting to 5:")
+for i in range(1, 6):
+    print("  ", i)
+
+# While loop
+let count = 0
+while count < 3:
+    print("Count is", count)
+    count = count + 1
+
+# Functions
+fn greet(person):
+    return "Hello, " + person + "!"
+
+print(greet("Alice"))
+print(greet("Bob"))
+
+# Function with multiple parameters
+fn add(a, b):
+    return a + b
+
+print("5 + 3 =", add(5, 3))
+
+# Recursive function
+fn factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+print("5! =", factorial(5))
+
+# Nested functions
+fn outer(x):
+    fn inner(y):
+        return x + y
+    return inner(10)
+
+print("outer(5) =", outer(5))
+
+print("Done!")

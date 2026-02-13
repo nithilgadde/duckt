@@ -1,0 +1,81 @@
+# Train a Neural Network to Learn XOR
+# This demonstrates real backpropagation and gradient descent in Duckt
+
+print("========================================")
+print("  Training Neural Network on XOR")
+print("========================================")
+print("")
+
+# XOR training data
+let X = [
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+]
+
+let y = [0, 1, 1, 0]  # XOR outputs
+
+print("Training data:")
+print("  [0, 0] -> 0")
+print("  [0, 1] -> 1")
+print("  [1, 0] -> 1")
+print("  [1, 1] -> 0")
+print("")
+
+# Create neural network with tanh activation (better for XOR)
+# 2 inputs -> 16 hidden -> 2 outputs
+let net = nn_create([2, 16, 2], "tanh")
+print("Created network:", net)
+print("Architecture: 2 -> 16 -> 2 (tanh)")
+print("")
+
+# Train with more epochs and higher learning rate
+print("Training for 1000 epochs with lr=0.1...")
+print("")
+let final_loss = nn_train(net, X, y, 1000, 0.1, 4, true)
+print("")
+print("Final loss:", final_loss)
+print("")
+
+# Test predictions - define samples individually to avoid tensor indexing issues
+print("Testing predictions:")
+let samples = [[0, 0], [0, 1], [1, 0], [1, 1]]
+let expected_list = [0, 1, 1, 0]
+let correct = 0
+
+let pred1 = nn_predict(net, [0, 0])
+let p1 = argmax(pred1)
+if p1 == 0:
+    correct = correct + 1
+    print("  [0, 0] -> Predicted:", p1, "Expected: 0 OK")
+else:
+    print("  [0, 0] -> Predicted:", p1, "Expected: 0 WRONG")
+
+let pred2 = nn_predict(net, [0, 1])
+let p2 = argmax(pred2)
+if p2 == 1:
+    correct = correct + 1
+    print("  [0, 1] -> Predicted:", p2, "Expected: 1 OK")
+else:
+    print("  [0, 1] -> Predicted:", p2, "Expected: 1 WRONG")
+
+let pred3 = nn_predict(net, [1, 0])
+let p3 = argmax(pred3)
+if p3 == 1:
+    correct = correct + 1
+    print("  [1, 0] -> Predicted:", p3, "Expected: 1 OK")
+else:
+    print("  [1, 0] -> Predicted:", p3, "Expected: 1 WRONG")
+
+let pred4 = nn_predict(net, [1, 1])
+let p4 = argmax(pred4)
+if p4 == 0:
+    correct = correct + 1
+    print("  [1, 1] -> Predicted:", p4, "Expected: 0 OK")
+else:
+    print("  [1, 1] -> Predicted:", p4, "Expected: 0 WRONG")
+
+print("")
+print("Accuracy:", correct, "/ 4")
+print("Training complete!")
