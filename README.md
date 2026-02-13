@@ -33,7 +33,7 @@ Duckt combines the simplicity of Python's syntax with specialized constructs for
 - **First-class Tensors** - Native multi-dimensional arrays with broadcasting and linear algebra
 - **Neural Network Primitives** - Built-in layers, models, and training constructs
 - **AI Agent System** - State management, tools, and method definitions for building agents
-- **Real AI Integration** - Built-in functions for HTTP requests, JSON parsing, and Claude AI API
+- **Real AI Integration** - Built-in functions for HTTP requests, JSON parsing
 - **Interactive REPL** - Explore and test code interactively
 - **Fast Execution** - Tree-walking interpreter implemented in modern C++17
 
