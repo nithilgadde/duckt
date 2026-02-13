@@ -1,6 +1,6 @@
 # Duckt
 
-A Python-like programming language for ML networks and AI agents, implemented in C++17.
+a dumb Python-like programming language i made for ML networks and AI agents, implemented in C++17.
 
 Duckt combines the simplicity of Python's syntax with specialized constructs for machine learning and AI agent development, all while delivering the performance of a C++ implementation.
 
