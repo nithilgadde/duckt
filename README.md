@@ -1,5 +1,8 @@
 # Duckt
 
+![duckt](https://github.com/user-attachments/assets/6676efe3-3792-4cdb-963f-0042db8fbe47)
+
+
 a dumb Python-like programming language i made for ML networks and AI agents, implemented in C++17.
 
 Duckt combines the simplicity of Python's syntax with specialized constructs for machine learning and AI agent development, all while delivering the performance of a C++ implementation.
